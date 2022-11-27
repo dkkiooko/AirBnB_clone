@@ -4,6 +4,8 @@
 import datetime
 import uuid
 from models import storage
+
+
 class BaseModel():
     """all common methods/attributes
     """
@@ -16,11 +18,15 @@ class BaseModel():
                 if key == '__class__':
                     continue
                 elif key == 'created_at':
-                    self.__dict__.update({'created_at':datetime.datetime.fromisoformat(value)})
+                    self.__dict__.update({'created_at':
+                                         datetime.datetime.
+                                         fromisoformat(value)})
                 elif key == 'updated_at':
-                    self.__dict__.update({'updated_at':datetime.datetime.fromisoformat(value)})
+                    self.__dict__.update({'updated_at':
+                                         datetime.datetime.
+                                         fromisoformat(value)})
                 else:
-                    self.__dict__.update({key:value})
+                    self.__dict__.update({key: value})
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.datetime.now()
@@ -47,8 +53,8 @@ class BaseModel():
             _dict_: _key/values of instance attributes_
         """
         dictionary = {}
-        dictionary.update({'__class__':self.__class__.__name__})
+        dictionary.update({'__class__': self.__class__.__name__})
         dictionary.update(self.__dict__)
-        dictionary.update({'created_at':self.created_at.isoformat(),
-                            'updated_at':self.updated_at.isoformat()})
+        dictionary.update({'created_at': self.created_at.isoformat(),
+                          'updated_at': self.updated_at.isoformat()})
         return dictionary

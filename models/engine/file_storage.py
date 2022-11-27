@@ -1,10 +1,14 @@
 #!/usr/bin/python3
-'''serializes instances to a JSON and 
-deserializes JSON file to instances'''
+"""file storage class
+"""
 
 import json
 import os
+
+
 class FileStorage():
+    """this is a class that stores data by (de)serializing JSON
+    """
 
     def __init__(self):
         """initiate path and dictionary

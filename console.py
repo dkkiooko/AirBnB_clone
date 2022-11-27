@@ -11,6 +11,8 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models import storage
+
+
 class HBNBCommand(cmd.Cmd):
     """command line interprete
 
@@ -19,12 +21,12 @@ class HBNBCommand(cmd.Cmd):
     """
     prompt = "(hbnb) "
     classes = {"BaseModel": BaseModel,
-                "User": User,
-                "Amenity": Amenity,
-                "City": City,
-                "Place": Place,
-                "Review": Review,
-                "State": State}
+               "User": User,
+               "Amenity": Amenity,
+               "City": City,
+               "Place": Place,
+               "Review": Review,
+               "State": State}
 
     def do_quit(self, args):
         """quit command exits out of the command interpreter
@@ -70,7 +72,7 @@ class HBNBCommand(cmd.Cmd):
             print(new_instance.id)
         else:
             print("** class doesn't exist **")
-    
+
     def do_show(self, args):
         """prints string representation of instance
 
@@ -89,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
             instance_id = "{}.{}".format(args[0], args[1])
             try:
                 print(instances[instance_id])
-            except:
+            except Exception:
                 print("** no instance found **")
 
     def do_destroy(self, args):
@@ -106,9 +108,9 @@ class HBNBCommand(cmd.Cmd):
             try:
                 del(instances[instance_id])
                 storage.save()
-            except:
+            except Exception:
                 print("** no instance found **")
-        
+
     def do_all(self, args):
         """prints a string representation of all instances
 
@@ -162,8 +164,7 @@ class HBNBCommand(cmd.Cmd):
                     obj[tokens[2]] = tokens[3]
                     obj['updated_at'] = datetime.datetime.today().isoformat()
                     storage.save()
-        
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
-   
