@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """file storage class
 """
-
+import datetime
 import json
 import os
 
@@ -39,29 +39,15 @@ class FileStorage():
             obj (_object_): _instance of a class_
         """
         new_name = f"{obj.__class__.__name__}.{obj.id}"
-        new_value = obj.to_dict()
+        new_value = obj
         self.__objects[new_name] = new_value
 
     def save(self):
         """serialize __objects into JSON file
         """
-        new_dict = {}
-        for key in self.__objects.keys():
-            new_dict[key] = self.__objects[key]
-        with open(self.__file_path, mode="w") as to_file:
-            json.dump(new_dict, to_file)
-        """if not os.path.exists(self.__file_path):
-            with open(self.__file_path, 'w') as file:
-                temp = {}
-                for key, obj in self.__objects.items():
-                    temp.update({key: obj})
-                file.write(json.dumps(temp))
-        else:
-            with open(self.__file_path, 'r') as file:
-                data = json.load(file)
-            data.update(self.__objects.items())
-            with open(self.__file_path, 'w') as file:
-                json.dump(data, file)"""
+        with open(self.__file_path, 'w') as file:
+            temp = {k: v.to_dict() for k, v in self.__objects.items()}
+            file.write(json.dumps(temp))
 
     def reload(self):
         """deserialize JSON file into __objects
@@ -70,5 +56,27 @@ class FileStorage():
             pass
         else:
             with open(self.__file_path, 'r') as file:
-                temp = json.load(file)
-            self.__objects = temp
+                loaded = json.load(file)
+            from models.amenity import Amenity
+            from models.base_model import BaseModel
+            from models.city import City
+            from models.review import Review
+            from models.place import Place
+            from models.state import State
+            from models.user import User
+
+            classes = {
+                "Amenity": Amenity,
+                "BaseModel": BaseModel,
+                "City": City,
+                "Review": Review,
+                "Place": Place,
+                "State": State,
+                "User": User
+            }
+            temp = {}
+            for k, v in loaded.items():
+                j = k.split('.')[0]
+                if j in classes.keys():
+                    temp[k] = classes[j](**v)
+            self.__objects.update(temp)

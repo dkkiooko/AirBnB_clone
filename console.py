@@ -91,8 +91,10 @@ class HBNBCommand(cmd.Cmd):
             instance_id = "{}.{}".format(args[0], args[1])
             if instance_id in instances:
                 temp = instances[instance_id].copy()
-                temp['created_at'] = datetime.datetime.fromisoformat(instances[instance_id]['created_at'])
-                temp['updated_at'] = datetime.datetime.fromisoformat(instances[instance_id]['updated_at'])
+                temp['created_at'] = datetime.datetime.fromisoformat(
+                    instances[instance_id]['created_at'])
+                temp['updated_at'] = datetime.datetime.fromisoformat(
+                    instances[instance_id]['updated_at'])
                 print(temp)
             else:
                 print("** no instance found **")
@@ -126,8 +128,10 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             for name in objects.keys():
                 temp = objects[name].copy()
-                temp['created_at'] = datetime.datetime.fromisoformat(temp['created_at'])
-                temp['updated_at'] = datetime.datetime.fromisoformat(temp['updated_at'])
+                temp['created_at'] = datetime.datetime.fromisoformat(
+                    temp['created_at'])
+                temp['updated_at'] = datetime.datetime.fromisoformat(
+                    temp['updated_at'])
                 instances.append(temp)
             print(instances)
             return
@@ -136,8 +140,10 @@ class HBNBCommand(cmd.Cmd):
             for name in objects:
                 if name[0:len(tokens[0])] == tokens[0]:
                     temp = objects[name].copy()
-                    temp['created_at'] = datetime.datetime.fromisoformat(temp['created_at'])
-                    temp['updated_at'] = datetime.datetime.fromisoformat(temp['updated_at'])
+                    temp['created_at'] = datetime.datetime.fromisoformat(
+                        temp['created_at'])
+                    temp['updated_at'] = datetime.datetime.fromisoformat(
+                        temp['updated_at'])
                     instances.append(temp)
             print(instances)
         else:
