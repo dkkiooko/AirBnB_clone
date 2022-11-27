@@ -89,9 +89,12 @@ class HBNBCommand(cmd.Cmd):
         else:
             instances = storage.all()
             instance_id = "{}.{}".format(args[0], args[1])
-            try:
-                print(instances[instance_id])
-            except Exception:
+            if instance_id in instances:
+                temp = instances[instance_id].copy()
+                temp['created_at'] = datetime.datetime.fromisoformat(instances[instance_id]['created_at'])
+                temp['updated_at'] = datetime.datetime.fromisoformat(instances[instance_id]['updated_at'])
+                print(temp)
+            else:
                 print("** no instance found **")
 
     def do_destroy(self, args):
@@ -106,7 +109,8 @@ class HBNBCommand(cmd.Cmd):
             instances = storage.all()
             instance_id = "{}.{}".format(args[0], args[1])
             try:
-                del(instances[instance_id])
+                del instances[instance_id]
+                storage.on_deletion(instances)
                 storage.save()
             except Exception:
                 print("** no instance found **")
@@ -120,15 +124,21 @@ class HBNBCommand(cmd.Cmd):
         objects = storage.all()
         instances = []
         if not args:
-            for name in objects:
-                instances.append(objects[name])
+            for name in objects.keys():
+                temp = objects[name].copy()
+                temp['created_at'] = datetime.datetime.fromisoformat(temp['created_at'])
+                temp['updated_at'] = datetime.datetime.fromisoformat(temp['updated_at'])
+                instances.append(temp)
             print(instances)
             return
         tokens = args.split(" ")
         if tokens[0] in self.classes:
             for name in objects:
                 if name[0:len(tokens[0])] == tokens[0]:
-                    instances.append(objects[name])
+                    temp = objects[name].copy()
+                    temp['created_at'] = datetime.datetime.fromisoformat(temp['created_at'])
+                    temp['updated_at'] = datetime.datetime.fromisoformat(temp['updated_at'])
+                    instances.append(temp)
             print(instances)
         else:
             print("** class doesn't exist **")

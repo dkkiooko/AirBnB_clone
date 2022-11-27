@@ -24,6 +24,14 @@ class FileStorage():
         """
         return self.__objects
 
+    def on_deletion(self, dictionary):
+        """updates the dictionary on deletion
+
+        Args:
+            dictionay (_dict_): _dictionary with the removed instance_
+        """
+        self.__objects = dictionary.copy()
+
     def new(self, obj):
         """naming convention for every new instance
 
@@ -37,7 +45,12 @@ class FileStorage():
     def save(self):
         """serialize __objects into JSON file
         """
-        if not os.path.exists(self.__file_path):
+        new_dict = {}
+        for key in self.__objects.keys():
+            new_dict[key] = self.__objects[key]
+        with open(self.__file_path, mode="w") as to_file:
+            json.dump(new_dict, to_file)
+        """if not os.path.exists(self.__file_path):
             with open(self.__file_path, 'w') as file:
                 temp = {}
                 for key, obj in self.__objects.items():
@@ -48,7 +61,7 @@ class FileStorage():
                 data = json.load(file)
             data.update(self.__objects.items())
             with open(self.__file_path, 'w') as file:
-                json.dump(data, file)
+                json.dump(data, file)"""
 
     def reload(self):
         """deserialize JSON file into __objects
