@@ -4,7 +4,6 @@
 import datetime
 import json
 import pathmgc
-import models
 import unittest
 from models import base_model
 
