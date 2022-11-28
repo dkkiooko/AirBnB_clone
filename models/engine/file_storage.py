@@ -30,7 +30,7 @@ class FileStorage():
         Args:
             dictionay (_dict_): _dictionary with the removed instance_
         """
-        self.__objects = dictionary.copy()
+        self.__objects = dictionary
 
     def new(self, obj):
         """naming convention for every new instance

@@ -65,7 +65,8 @@ class HBNBCommand(cmd.Cmd):
         """
         if not args:
             print("** class name missing **")
-        args = args.split(' ')
+            return
+        args = args.split(" ")
         if len(args) == 1 and args[0] in self.classes:
             new_instance = eval(f"{args[0]}()")
             new_instance.save()
@@ -90,12 +91,7 @@ class HBNBCommand(cmd.Cmd):
             instances = storage.all()
             instance_id = "{}.{}".format(args[0], args[1])
             if instance_id in instances:
-                temp = instances[instance_id].copy()
-                temp['created_at'] = datetime.datetime.fromisoformat(
-                    instances[instance_id]['created_at'])
-                temp['updated_at'] = datetime.datetime.fromisoformat(
-                    instances[instance_id]['updated_at'])
-                print(temp)
+                print(instances[instance_id])
             else:
                 print("** no instance found **")
 
@@ -131,26 +127,15 @@ class HBNBCommand(cmd.Cmd):
         objects = storage.all()
         instances = []
         if not args:
-            for name in objects.keys():
-                temp = objects[name].copy()
-                temp['created_at'] = datetime.datetime.fromisoformat(
-                    temp['created_at'])
-                temp['updated_at'] = datetime.datetime.fromisoformat(
-                    temp['updated_at'])
-                instances.append(temp)
+            instances = [{k: str(v) for k, v in objects.items()}]
             print(instances)
             return
         tokens = args.split(" ")
-        if tokens[0] in self.classes:
-            for name in objects:
-                if name[0:len(tokens[0])] == tokens[0]:
-                    temp = objects[name].copy()
-                    temp['created_at'] = datetime.datetime.fromisoformat(
-                        temp['created_at'])
-                    temp['updated_at'] = datetime.datetime.fromisoformat(
-                        temp['updated_at'])
-                    instances.append(temp)
-            print(instances)
+        if tokens[0] in self.classes.keys():
+            instance = [{k: str(v) for k, v in objects.items()
+                         if k.startswith(tokens[0])}]
+            print(instance)
+            return
         else:
             print("** class doesn't exist **")
 
@@ -162,7 +147,9 @@ class HBNBCommand(cmd.Cmd):
         """
         tokens = args.split(" ")
         objects = storage.all()
-        if len(tokens) == 0:
+        if len(tokens) >= 5:
+            return
+        elif len(tokens) == 0:
             print("** class name missing **")
             return
         elif len(tokens) == 1:
@@ -182,8 +169,13 @@ class HBNBCommand(cmd.Cmd):
                 obj = objects[name]
                 not_to_change = ["id", "created_at", "updated_at"]
                 if tokens[2] not in not_to_change:
-                    obj[tokens[2]] = tokens[3]
-                    obj['updated_at'] = datetime.datetime.today().isoformat()
+                    obj = obj.to_dict()
+                    obj.update({tokens[2]: tokens[3]})
+                    obj.update({'updated_at': datetime.datetime.today()
+                                .isoformat()})
+                    obj = self.classes[tokens[0]](**obj)
+                    objects.update({name: obj})
+                    storage.on_deletion(objects)
                     storage.save()
 
 
