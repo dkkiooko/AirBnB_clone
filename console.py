@@ -179,9 +179,13 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return
         else:
-            name = tokens[0] + "." + tokens[1]
+            if tokens[0] not in self.classes:
+                print("** class doesn't exist **")
+                return
+            name = f"{tokens[0]}.{tokens[1]}"
             if name not in objects:
                 print("** no instance found **")
+                return
             else:
                 obj = objects[name]
                 not_to_change = ["id", "created_at", "updated_at"]
