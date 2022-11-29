@@ -149,13 +149,20 @@ class HBNBCommand(cmd.Cmd):
         objects = storage.all()
         if len(tokens) >= 5:
             return
-        elif len(tokens) == 0:
+        if not args:
             print("** class name missing **")
             return
         elif len(tokens) == 1:
+            if tokens[0] not in self.classes:
+                print("** class doesn't exist **")
+                return
             print("** instance id missing **")
             return
         elif len(tokens) == 2:
+            name = f"{tokens[0]}.{tokens[1]}"
+            if name not in objects:
+                print("** no instance found **")
+                return
             print("** attribute name missing **")
             return
         elif len(tokens) == 3:

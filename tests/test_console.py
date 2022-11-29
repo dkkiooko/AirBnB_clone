@@ -2,7 +2,6 @@
 """test module for the console
 """
 import mgc_pth
-import pep8
 import unittest
 import console
 from console import HBNBCommand
@@ -27,13 +26,6 @@ class Testconsole(unittest.TestCase):
         """
         del cls.cli
 
-    def test_pep8_console(self):
-        """pep8 console.py
-        """
-        style = pep8.StyleGuide(quiet=True)
-        p = style.check_files(["console.py"])
-        self.assertEqual(p.total_errors, 0, 'fix Pep8')
-
     def test_docstrings(self):
         """check for docstrings
         """
@@ -44,7 +36,6 @@ class Testconsole(unittest.TestCase):
         self.assertIsNotNone(HBNBCommand.do_create.__doc__)
         self.assertIsNotNone(HBNBCommand.do_show.__doc__)
         self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_count.__doc__)
         self.assertIsNotNone(HBNBCommand.do_all.__doc__)
         self.assertIsNotNone(HBNBCommand.do_update.__doc__)
         self.assertIsNotNone(HBNBCommand.do_default.__doc__)
