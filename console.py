@@ -169,6 +169,13 @@ class HBNBCommand(cmd.Cmd):
             print("** attribute name missing **")
             return
         elif len(tokens) == 3:
+            if tokens[0] not in self.classes:
+                print("** class doesn't exist **")
+                return
+            name = f"{tokens[0]}.{tokens[1]}"
+            if name not in objects:
+                print("** no instance found **")
+                return
             print("** value missing **")
             return
         else:
