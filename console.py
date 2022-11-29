@@ -159,6 +159,9 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return
         elif len(tokens) == 2:
+            if tokens[0] not in self.classes:
+                print("** class doesn't exist **")
+                return
             name = f"{tokens[0]}.{tokens[1]}"
             if name not in objects:
                 print("** no instance found **")
